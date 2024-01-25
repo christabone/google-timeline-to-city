@@ -20,10 +20,10 @@ def load_config(file_path):
     return config
 
 def validate_config(config):
-    if 'date_ranges' not in config:
-        raise ValueError("Config file must include 'date_ranges'.")
+    if 'date_range' not in config:
+        raise ValueError("Config file must include 'date_range'.")
 
-    for range in config['date_ranges']:
+    for range in config['date_range']:
         if 'start' not in range or 'end' not in range or 'closest_time' not in range:
             raise ValueError("Each date range must include 'start', 'end', and 'closest_time'.")
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
         data = json.load(file)
 
     output_data = []
-    for date_range in config['date_ranges']:
+    for date_range in config['date_range']:
         extracted_data = extract_data(data, date_range)
 
         for record in tqdm(extracted_data, desc="Querying Nominatim"):
