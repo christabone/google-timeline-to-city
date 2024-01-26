@@ -89,6 +89,10 @@ def get_closest_city_name(latitude, longitude, geolocator, email):
         country = address.get('country', '')
         if city is None:
             print(f"Warning: Could not find city, town, hamlet, township, village, or suburb for coordinates: {latitude}, {longitude}")
+        if state is None:
+            print(f"Warning: Could not find state or province for coordinates: {latitude}, {longitude}")
+        if country is None:
+            print(f"Warning: Could not find country for coordinates: {latitude}, {longitude}")
         return ', '.join(filter(None, [city, state, country]))
     else:
         return None
