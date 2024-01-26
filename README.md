@@ -11,7 +11,7 @@ This script processes Google Timeline JSON history data to extract location info
 ## Requirements
 - Python 3
 - Libraries: json, yaml, argparse, datetime, geopy, tqdm
-- A YAML configuration file specifying the date ranges and times for data extraction.
+- A YAML configuration file specifying the date ranges, times, and UTC offsets for data extraction.
 - A copy of your Google Timeline data obtained by Google's takeout service.
 
 ## Downloading Google Timeline Data from Google Takeout
@@ -69,13 +69,35 @@ date_ranges:
   - start: "YYYY-MM-DD"
     end: "YYYY-MM-DD"
     closest_time: "HH:MM:SS"
+    UTC_offset: "±HH:MM"
 ```  
-
-start and end define the date range for extracting data.
-closest_time specifies the time of day for which you want to find the closest data point.
+- start and end define the date range for extracting data.
+- closest_time specifies the time of day for which you want to find the closest data point.
+- UTC_offset specifies the UTC offset to adjust the times to your local timezone (e.g., -04:00 for Atlantic Time).
 
 # Output
-The script outputs a TSV file named output.tsv containing the timestamp, latitude, longitude, and location name (city, province/state, country) for each data point in the specified date ranges.
+The script generates a TSV file named `output.tsv`, containing the adjusted timestamp, latitude, longitude, and location name (city, province/state, country) for each data point within the specified date ranges.
+
+## Adjusted Timestamps
+The script adjusts timestamps to a specified timezone. In the `output.tsv` file, the timestamps reflect these adjustments, based on the UTC offset provided in the `config.yaml` file.
+
+- This adjustment aligns the timestamps with the user's local time zone for better context.
+- The format of the adjusted timestamps in the TSV file remains consistent with the original Google Timeline format (`YYYY-MM-DDTHH:MM:SS.sssZ`).
+
+## Example Output Format
+The TSV file includes tab-separated columns in the following order:
+
+1. **Timestamp (Adjusted)**: The date and time of the location data point, modified to the specified local time zone.
+2. **Latitude**: The latitude coordinate of the location.
+3. **Longitude**: The longitude coordinate of the location.
+4. **Location Name**: A readable name of the location, typically in "City, Province/State, Country" format.
+
+### Location Name Logic
+The script uses Nominatim's reverse geocoding to convert latitude and longitude coordinates into human-readable location names. The logic for determining the location name is as follows:
+
+- **City**: The script first tries to identify the 'city' from the geocoded data. If 'city' is not available, it looks for 'town', 'township', 'village', or 'suburb', in that order of preference. 
+- **State/Province**: The script first searches for the 'state' field in the geocoded data. If 'state' is not available, it looks for 'province'.
+- **Country**: The script also includes the 'country' field as the final field.
 
 # License
 MIT License -- Please see the LICENSE file.
