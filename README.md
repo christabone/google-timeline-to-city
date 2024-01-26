@@ -95,7 +95,7 @@ The TSV file includes tab-separated columns in the following order:
 ### Location Name Logic
 The script uses Nominatim's reverse geocoding to convert latitude and longitude coordinates into human-readable location names. The logic for determining the location name is as follows:
 
-- **City**: The script first tries to identify the 'city' from the geocoded data. If 'city' is not available, it looks for 'town', 'township', 'village', or 'suburb', in that order of preference. 
+- **City**: The script first tries to identify the 'city' from the geocoded data. If 'city' is not available, it looks for 'town', 'hamlet', 'township', 'village', or 'suburb', in that order of preference. 
 - **State/Province**: The script first searches for the 'state' field in the geocoded data. If 'state' is not available, it looks for 'province'.
 - **Country**: The script also includes the 'country' field as the final field.
 
