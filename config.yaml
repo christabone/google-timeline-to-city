@@ -1,6 +1,6 @@
 date_range:
-  - start: "2018-10-28"
-    end: "2023-10-28"
+  - start: "2024-01-01"
+    end: "2024-12-31"
     closest_time: "12:00:00"
     UTC_offset: "-04:00"
   # - start: "2023-02-01"
